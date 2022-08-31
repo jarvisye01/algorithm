@@ -308,6 +308,51 @@ bool Cycle::HasCycle()
     return bHasCycle;
 }
 
+class TwoColor
+{
+public:
+    TwoColor(UnorderGraph & graph);
+    void Dfs(UnorderGraph & graph, int v);
+    bool CanTwoColor();
+private:
+    vector<bool> oMarked;
+    vector<bool> oColorVec;
+    UnorderGraph oGraph;
+    bool bCanTwoColor;
+};
+
+TwoColor::TwoColor(UnorderGraph & graph):
+    oGraph(graph), oMarked(graph.GetVerticeCount(), false), oColorVec(graph.GetVerticeCount(), false), bCanTwoColor(true)
+{
+    for (int v = 0; v < oGraph.GetVerticeCount(); v++)
+    {
+        Dfs(oGraph, v);
+    }
+}
+
+void TwoColor::Dfs(UnorderGraph & graph, int v)
+{
+    oMarked[v] = true;
+    vector<int> oAdjVec = graph.GetAdjVec(v);
+    for (int w: oAdjVec)
+    {
+        if (!oMarked[w])
+        {
+            oColorVec[w] = !oColorVec[v];
+            Dfs(graph, w);
+        }
+        else if (oColorVec[w] == oColorVec[v])
+        {
+            bCanTwoColor = false;
+        }
+    }
+}
+
+bool TwoColor::CanTwoColor()
+{
+    return bCanTwoColor;
+}
+
 int main(int argc, char ** argv)
 {
     UnorderGraph oGraph(10);
@@ -370,5 +415,11 @@ int main(int argc, char ** argv)
     printf("Cycle:\n");
     Cycle oCycle(oGraph);
     printf("HasCycle: %d\n", oCycle.HasCycle() ? 1 : 0);
+
+    printf("\n");
+
+    printf("TwoColor:\n");
+    TwoColor oTwoColor(oGraph);
+    printf("CanTwoColor: %d\n", oTwoColor.CanTwoColor() ? 1 : 0);
     return 0;
 }
