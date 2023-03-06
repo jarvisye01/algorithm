@@ -16,6 +16,7 @@ class Solution
 public:
     ListNode * detectCycle(ListNode * head)
     {
+        // 排除空节点或者一个节点的非环情况，避免对后续产生干扰
         if (head == nullptr || head->next == nullptr)
             return nullptr;
         ListNode *fast = head, *slow = head;
@@ -28,6 +29,7 @@ public:
         }
         if (fast != slow)
             return nullptr;
+        // 只有二者相遇才能去找重合的第一个节点
         slow = head;
         while (slow != fast)
         {

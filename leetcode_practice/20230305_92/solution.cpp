@@ -33,6 +33,8 @@ public:
         }
         ListNode *end = v_head;
         v_head = v_head->next, end->next = nullptr;
+        // 找到需要一定的节点start和end
+        // 本题也可以写一个reverseHeadN(ListNode * head, int N),这样就只需要找到start就好
         last->next = reverse(start);
         start->next = v_head;
         return v_node.next;

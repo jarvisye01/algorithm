@@ -22,6 +22,7 @@ public:
                 continue;
             }
 
+            // 重点是找到tail中第一个大于或者等于nums[i]的数字,必然是存在的
             int left = 0, right = tail.size() - 1;
             while (left < right)
             {
@@ -29,8 +30,9 @@ public:
                 if (tail[mid] < nums[i])
                     left = mid + 1;
                 else
-                    right = mid;
+                    right = mid; // right保持在mid上，而不是移动到mid的左边
             }
+            // 将第一个大于等于nums[i]的数替换成nums[i]
             tail[left] = nums[i];
         }
         return tail.size();
